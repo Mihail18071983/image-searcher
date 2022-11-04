@@ -11,9 +11,7 @@ player.on('play', function () {
 
 player.on('timeupdate', onTimeUpdate);
 
-function onTimeUpdate({
-  }) {
-
+function onTimeUpdate() {
   localStorage.setItem('videoplayer-current-time', JSON.stringify({
     duration: 61.857,
     percent: 0.049,
