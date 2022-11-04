@@ -13,7 +13,7 @@ player.on('timeupdate', onTimeUpdate);
 
 function onTimeUpdate(e) {
     localStorage.setItem('videoplayer-current-time', JSON.stringify(e));
-    console.log(e.target);
+    console.log(e);
 }
 
 
