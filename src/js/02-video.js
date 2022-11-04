@@ -11,10 +11,12 @@ player.on('play', function () {
 
 player.on('timeupdate', onTimeUpdate);
 
-function onTimeUpdate() {
+function onTimeUpdate(e) {
+    console.log(e);
   localStorage.setItem('videoplayer-current-time', JSON.stringify({
     duration: 61.857,
     percent: 0.049,
     seconds: 3.034,
   }));
 }
+
