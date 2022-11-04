@@ -5,18 +5,14 @@ const player = new Player('vimeo-player', {
   width: 640,
 });
 
-player.on('play', function () {
-  console.log('played the video!');
-});
+// player.on('play', function () {
+//   console.log('played the video!');
+// });
 
 player.on('timeupdate', onTimeUpdate);
 
 function onTimeUpdate(e) {
-    console.log(e);
-  localStorage.setItem('videoplayer-current-time', JSON.stringify({
-    duration: 61.857,
-    percent: 0.049,
-    seconds: 3.034,
-  }));
+
+  localStorage.setItem('videoplayer-current-time', JSON.stringify(e));
 }
 
