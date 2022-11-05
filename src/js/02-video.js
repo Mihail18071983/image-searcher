@@ -23,17 +23,19 @@ if (sessionStorage.getItem("is_reloaded")) {
 
 const getContentOfLocalStorage = localStorage.getItem('videoplayer-current-time');
 console.log(getContentOfLocalStorage);
-// player.setCurrentTime(30.456).then(function(seconds) {
-//     // seconds = the actual time that the player seeked to
-// }).catch(function(error) {
-//     switch (error.name) {
-//         case 'RangeError':
-//             // the time was less than 0 or greater than the video’s duration
-//             break;
 
-//         default:
-//             // some other error occurred
-//             break;
-//     }
-// });
+player.setCurrentTime(time).then(function(actTime) {
+  actTime = getContentOfLocalStorage.seconds;
+}).catch(function(error) {
+    switch (error.name) {
+      case 'RangeError':
+        (this.time<0 || this.time>getContentOfLocalStorage.duration)
+            // the time was less than 0 or greater than the video’s duration
+            break;
+
+        default:
+            // some other error occurred
+            break;
+    }
+});
 
