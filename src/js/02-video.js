@@ -24,7 +24,7 @@ if (sessionStorage.getItem("is_reloaded")) {
 const getContentOfLocalStorage = localStorage.getItem('videoplayer-current-time');
 console.log(getContentOfLocalStorage);
 
-player.setCurrentTime(30.456).then(function(actTime) {
+player.setCurrentTime(50).then(function(actTime) {
   actTime = getContentOfLocalStorage.seconds;
 }).catch(function(error) {
     switch (error.name) {
