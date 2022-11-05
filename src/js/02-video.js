@@ -25,12 +25,12 @@ if (sessionStorage.getItem("is_reloaded")) {
   console.log('Страница перезагружена'); 
 }
 
- player.setCurrentTime(55).then(function(actTime) {
-  actTime = getContentOfLocalStorage.seconds;
+ player.setCurrentTime(getContentOfLocalStorage.seconds).then(function(seconds) {
+  seconds = getContentOfLocalStorage.seconds;
 }).catch(function(error) {
     switch (error.name) {
       case 'RangeError':
-        (actTime<0 || actTime>getContentOfLocalStorage.duration)
+        (seconds<0 || seconds>getContentOfLocalStorage.duration)
             // the time was less than 0 or greater than the video’s duration
             break;
 
