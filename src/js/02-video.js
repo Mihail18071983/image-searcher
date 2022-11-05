@@ -20,9 +20,12 @@ const getContentOfLocalStorage = localStorage.getItem('videoplayer-current-time'
 console.log(getContentOfLocalStorage);
 
 sessionStorage.setItem("is_reloaded", true);
+
 if (sessionStorage.getItem("is_reloaded")) {
-  console.log('Страница перезагружена');
-  player.setCurrentTime(getContentOfLocalStorage.seconds).then(function(actTime) {
+  console.log('Страница перезагружена'); 
+}
+
+ player.setCurrentTime(55).then(function(actTime) {
   actTime = getContentOfLocalStorage.seconds;
 }).catch(function(error) {
     switch (error.name) {
@@ -36,7 +39,4 @@ if (sessionStorage.getItem("is_reloaded")) {
             break;
     }
 });
-}
-
-
 
