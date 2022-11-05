@@ -12,7 +12,8 @@ const player = new Player('vimeo-player', {
 player.on('timeupdate', onTimeUpdate);
 
 function onTimeUpdate(e) {
-    localStorage.setItem('videoplayer-current-time', JSON.stringify(e));
+  localStorage.setItem('videoplayer-current-time', JSON.stringify(e));
+  e.preventDefault();
     console.log(e);
 }
 
