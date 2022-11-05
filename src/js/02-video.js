@@ -15,7 +15,7 @@ function onTimeUpdate(e) {
     localStorage.setItem('videoplayer-current-time', JSON.stringify(e));
     console.log(e);
 }
-
+sessionStorage.setItem("is_reloaded", true);
 if (sessionStorage.getItem("is_reloaded")) {
 	console.log('Страница перезагружена')
 }
