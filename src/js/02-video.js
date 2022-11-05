@@ -16,15 +16,13 @@ function onTimeUpdate(e) {
     console.log(e);
 }
 
-sessionStorage.setItem("is_reloaded", true);
-if (sessionStorage.getItem("is_reloaded")) {
-	console.log('Страница перезагружена')
-}
-
 const getContentOfLocalStorage = localStorage.getItem('videoplayer-current-time');
 console.log(getContentOfLocalStorage);
 
-player.setCurrentTime(getContentOfLocalStorage.seconds).then(function(actTime) {
+sessionStorage.setItem("is_reloaded", true);
+if (sessionStorage.getItem("is_reloaded")) {
+  console.log('Страница перезагружена');
+  player.setCurrentTime(getContentOfLocalStorage.seconds).then(function(actTime) {
   actTime = getContentOfLocalStorage.seconds;
 }).catch(function(error) {
     switch (error.name) {
@@ -38,4 +36,7 @@ player.setCurrentTime(getContentOfLocalStorage.seconds).then(function(actTime) {
             break;
     }
 });
+}
+
+
 
