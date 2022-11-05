@@ -5,7 +5,7 @@ const throttle = require('lodash.throttle');
 const ifFrameRef = document.querySelector('#vimeo-player');
 const player = new Player(ifFrameRef);
 
-player.on('timeupdate', throttle(onTimeUpdate,1000));
+player.on('timeupdate', throttle(onTimeUpdate,5000));
 
 function onTimeUpdate(e) {
   console.log(e);
