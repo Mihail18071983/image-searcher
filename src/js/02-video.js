@@ -16,7 +16,7 @@ function onTimeUpdate(e) {
     console.log(e);
 }
 
-const getContentOfLocalStorage = localStorage.getItem('videoplayer-current-time');
+const getContentOfLocalStorage = JSON.parse(localStorage.getItem('videoplayer-current-time'));
 console.log(getContentOfLocalStorage);
 
 sessionStorage.setItem("is_reloaded", true);
@@ -26,8 +26,8 @@ if (sessionStorage.getItem("is_reloaded")) {
 }
 
  player.setCurrentTime(getContentOfLocalStorage.seconds).then(function(seconds) {
-   this.seconds = getContentOfLocalStorage.seconds;
-   console.log(this.seconds);
+   seconds = getContentOfLocalStorage.seconds;
+   console.log(seconds);
 }).catch(function(error) {
     switch (error.name) {
       case 'RangeError':
