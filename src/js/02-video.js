@@ -26,7 +26,8 @@ if (sessionStorage.getItem("is_reloaded")) {
 }
 
  player.setCurrentTime(getContentOfLocalStorage.seconds).then(function(seconds) {
-  seconds = getContentOfLocalStorage.seconds;
+   seconds = getContentOfLocalStorage.seconds;
+   console.log(seconds);
 }).catch(function(error) {
     switch (error.name) {
       case 'RangeError':
