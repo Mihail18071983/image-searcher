@@ -5,20 +5,15 @@ const throttle = require('lodash.throttle');
 const ifFrameRef = document.querySelector('#vimeo-player');
 const player = new Player(ifFrameRef);
 
-player.on('timeupdate', throttle(onTimeUpdate,1000));
+player.on('timeupdate', throttle(setWatchingTime, 1000));
 
-function onTimeUpdate(e) {
-  localStorage.setItem('videoplayer-current-time', JSON.stringify(e));
+function setWatchingTime(e) {
+  console.log(e.seconds)
+  localStorage.setItem('videoplayer-current-time', e.seconds);
 }
 
-const getContentOfLocalStorage = JSON.parse(
-  localStorage.getItem('videoplayer-current-time')
+const getContentOfLocalStorage = (
+  localStorage.getItem('videoplayer-current-time') || 0
 );
 
-player.setCurrentTime(getContentOfLocalStorage.seconds);
-
-
-
-window.addEventListener('touchstart', function(e) {
-  e.preventDefault();
-}, {passive:false}); // <-- mark the event listerner as NOT passive
+player.setCurrentTime(getContentOfLocalStorage);
