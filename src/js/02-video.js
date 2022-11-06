@@ -8,7 +8,6 @@ const player = new Player(ifFrameRef);
 player.on('timeupdate', throttle(setWatchingTime, 1000));
 
 function setWatchingTime(e) {
-  console.log(e.seconds)
   localStorage.setItem('videoplayer-current-time', e.seconds);
 }
 
