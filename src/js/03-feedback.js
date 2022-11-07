@@ -1,10 +1,12 @@
+const throttle = require("lodash.throttle");
+
 const refs = {
   form: document.querySelector('.feedback-form'),
 };
 
 const LOCALSTORAGE_KEY = 'feedback-form-state';
 
-refs.form.addEventListener('input', onInputForm);
+refs.form.addEventListener('input',throttle(onInputForm,500));
 refs.form.addEventListener('submit', onSubmitForm);
 window.addEventListener('load', updateOutputOnload);
 
@@ -30,6 +32,7 @@ function onSubmitForm(e) {
   const {
     elements: { email, message },
   } = e.currentTarget;
+  console.log({email:email.value, message:message.value})
   localStorage.clear();
   refs.form.reset();
 }
