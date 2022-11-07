@@ -30,7 +30,6 @@ function onSubmitForm(e) {
   const {
     elements: { email, message },
   } = e.currentTarget;
-  console.log({ email: email.value, message: message.value });
   localStorage.clear();
   refs.form.reset();
 }
