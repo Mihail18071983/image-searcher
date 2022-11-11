@@ -16,3 +16,14 @@ img {
   display: block;
   max-width: 100%;
 }
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+}
