@@ -6,7 +6,7 @@ import { convertMs } from './convertMs';
 const fkatpicr = flatpickr('#datetime-picker', options);
 console.dir(fkatpicr)
 
-const refs = {
+export const refs = {
     input: document.querySelector('#datetime-picker'),
     button: document.querySelector('[data-start]'),
     seconds: document.querySelector('[data-seconds]'),

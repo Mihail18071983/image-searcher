@@ -1,4 +1,5 @@
-
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { refs } from './02-timer';
 let userDate = null;
 
 export const options = {
@@ -7,10 +8,11 @@ export const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    // console.log(selectedDates[0]);
-    userDate= Date.parse(selectedDates[0]);  
-    return userDate
-  },  
+    selectedDates[0] <= this.defaultDate
+      ? (Notify.failure('Please choose a date in the future'),
+        (refs.button.disabled = true))
+      : (Notify.success('The countdown has started'),
+        (refs.button.disabled = false));
+    userDate = selectedDates[0];
+  },
 };
-
-console.log(userDate)
