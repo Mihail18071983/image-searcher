@@ -27,3 +27,14 @@ label {
   display: flex;
   flex-direction: column;
 }
+
+.timer {
+  margin-top: 20px;
+  display: flex;
+  gap:10px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
