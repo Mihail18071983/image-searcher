@@ -1,7 +1,7 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { refs } from './02-timer';
-let userDate = null;
-let timerID = null;
+export let userDate = null;
+export let timerID = null;
 
 export const options = {
   enableTime: true,
@@ -17,4 +17,3 @@ export const options = {
     userDate = selectedDates[0];
   },
 };
-console.log(userDate);
