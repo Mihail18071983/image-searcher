@@ -5,9 +5,10 @@ import { convertMs } from './convertMs';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 
- let timerID = null;
+let timerID = null;
+let userDate = null;
 
- const options = {
+const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
@@ -32,7 +33,6 @@ export const refs = {
   daysUi: document.querySelector('[data-days]'),
 };
 
-let userDate = Date.parse(refs.input.value);
 window.addEventListener('click', startTimer);
 
 function startTimer(e) { 
@@ -43,17 +43,23 @@ function startTimer(e) {
 }
 
 function countDownTimer() {
+  userDate = Date.parse(refs.input.value);
   const diff = userDate - Date.now();
-  console.log(diff)
-    if (diff <=1000) {
-      clearInterval(timerID);
+  let {days, hours, minutes, seconds} = getTimeComponents(diff) ;
+  if (diff <= 1000) {
+    clearInterval(timerID);
+    seconds = getTimeComponents(0).seconds;
+    minutes = getTimeComponents(0).minutes;
+    hours = getTimeComponents(0).hours;
+    days = getTimeComponents(0).days;
+    
   }
-  console.log(convertMs(diff));
-  const { seconds, minutes, hours, days } = convertMs(diff);
   updateCountDownUI({ seconds, minutes, hours, days }); 
 }
 
-
+function getTimeComponents(time) {
+  return convertMs(time)
+}
 
 function updateCountDownUI({ seconds, minutes, hours, days }) {
   refs.secondsUi.textContent = seconds;
