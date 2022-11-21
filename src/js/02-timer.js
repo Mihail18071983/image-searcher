@@ -40,6 +40,7 @@ function startTimer(e) {
   Notify.success("The countdown has started");
   timerID = setInterval(countDownTimer, 1000);
   refs.button.disabled = true;
+  refs.input.disabled = true;
 }
 
 function countDownTimer() {
