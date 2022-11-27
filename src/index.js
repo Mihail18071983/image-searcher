@@ -11,7 +11,6 @@ const refs = {
   countryInfo: document.querySelector('.country-info'),
 };
 
-
 let formValue = '';
 
 refs.searchQueary.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
@@ -23,31 +22,27 @@ function onInput(e) {
   fetchCountries(formValue)
     .then(countries => {
       console.log(countries);
-      if (countries.length>1 && countries.length<=10) {
+      if (countries.length > 1 && countries.length <= 10) {
         renderCountryTitle(countries);
-      }
-      else if (countries.length > 10) {
+      } else if (countries.length > 10) {
         Notify.info(
           'Too many mathces found. Please enter a more spesific name'
         );
       }
     })
-    .catch(err=> {
-        console.log(err);
-      });
+    .catch(err => {
+      console.log(err);
+    });
 }
 
-
-function renderCountryTitle (countries) {
+function renderCountryTitle(countries) {
   const markup = countries
-    .map((country) => {
+    .map(country => {
       return `<li class="country-item">
-      <p class="country-flag"></p>
-      <p class="country-name">${country.altSpellings[3]
-      }</p>
+      <img src="${country.flags.svg}" alt="flag">
+      <p class="country-name">${country.name.official}</p>
     </li>`;
     })
-    .join("");
+    .join('');
   refs.countryList.insertAdjacentHTML('beforeend', markup);
-
 }
