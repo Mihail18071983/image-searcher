@@ -3,7 +3,7 @@ import { Notify } from 'notiflix';
 import './css/styles.css';
 import { fetchCountries } from './js/fetchCountries';
 
-const DEBOUNCE_DELAY = 1000;
+const DEBOUNCE_DELAY = 300;
 
 const refs = {
   searchQueary: document.querySelector('#search-box'),
@@ -18,17 +18,24 @@ refs.searchQueary.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 function onInput(e) {
   e.preventDefault();
   formValue = refs.searchQueary.value.trim();
-  if (formValue === '') return;
+  if (formValue === '') {
+    clearRender();
+    return;
+  }
+ 
   fetchCountries(formValue)
     .then(countries => {
-      console.log(countries);
+      console.dir(countries);
       if (countries.length===1) {
+        clearRender();
         renderCountryTitle(countries);
         renderCountryInfo(countries);
       }
       else if (countries.length > 1 && countries.length <= 10) {
+        clearRender();
         renderCountryTitle(countries);
       } else {
+        clearRender();
         Notify.info(
           'Too many mathces found. Please enter a more spesific name'
         );
@@ -43,30 +50,30 @@ function renderCountryTitle(countries) {
   const markup = countries
     .map(country => {
       return `<li class="country-item">
-      <img src="${country.flags.svg}" alt="flag">
+      <img class='country-img' src="${country.flags.svg}" alt="flag">
       <p class="country-name">${country.name.official}</p>
     </li>`;
     })
-    .join('');
+    .join('');  
   refs.countryList.insertAdjacentHTML('beforeend', markup);
 }
 
 function renderCountryInfo(countries) {
-  const arrLanguages=[];
- 
+  const langs=countries.map(({languages})=>Object.values(languages))
   const markup = countries
     .map(country => {
-      for (const language of country.languages.values()) {
-        console.log(language)
-        arrLanguages.push(language)
-  }
-  const arrLanguagesStr=arrLanguages.join('');
       return `<p class="info-text">Capital: <span class="value">${country.capital}</span></p>
       <p class="info-text">Population: <span class="value">${country.population
       }</span></p>
-      <p class="info-text">languages <span class="value">${arrLanguagesStr
-      }</span></p>`;
+      <p class="info-text">languages: <span class="value">${langs}</span></p>`;
     })
     .join('');
   refs.countryInfo.insertAdjacentHTML('beforeend', markup);
 }
+
+function clearRender () {
+  refs.countryInfo.innerHTML=''; 
+  refs.countryList.innerHTML='';
+}
+
+

@@ -19,6 +19,17 @@ body {
   margin-bottom: 16px;
 }
 
-li {
+ul, li {
   list-style: none;
+  padding: 0;
+}
+
+.country-item {
+  display: flex;
+  align-items: center;
+  gap:20px;
+}
+
+.country-img {
+  width: 40px;
 }
