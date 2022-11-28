@@ -3,7 +3,7 @@ import { Notify } from 'notiflix';
 import './css/styles.css';
 import { fetchCountries } from './js/fetchCountries';
 
-const DEBOUNCE_DELAY = 300;
+const DEBOUNCE_DELAY = 1000;
 
 const refs = {
   searchQueary: document.querySelector('#search-box'),
@@ -22,9 +22,13 @@ function onInput(e) {
   fetchCountries(formValue)
     .then(countries => {
       console.log(countries);
-      if (countries.length > 1 && countries.length <= 10) {
+      if (countries.length===1) {
         renderCountryTitle(countries);
-      } else if (countries.length > 10) {
+        renderCountryInfo(countries);
+      }
+      else if (countries.length > 1 && countries.length <= 10) {
+        renderCountryTitle(countries);
+      } else {
         Notify.info(
           'Too many mathces found. Please enter a more spesific name'
         );
@@ -45,4 +49,24 @@ function renderCountryTitle(countries) {
     })
     .join('');
   refs.countryList.insertAdjacentHTML('beforeend', markup);
+}
+
+function renderCountryInfo(countries) {
+  const arrLanguages=[];
+ 
+  const markup = countries
+    .map(country => {
+      for (const language of country.languages.values()) {
+        console.log(language)
+        arrLanguages.push(language)
+  }
+  const arrLanguagesStr=arrLanguages.join('');
+      return `<p class="info-text">Capital: <span class="value">${country.capital}</span></p>
+      <p class="info-text">Population: <span class="value">${country.population
+      }</span></p>
+      <p class="info-text">languages <span class="value">${arrLanguagesStr
+      }</span></p>`;
+    })
+    .join('');
+  refs.countryInfo.insertAdjacentHTML('beforeend', markup);
 }
