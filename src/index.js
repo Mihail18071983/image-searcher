@@ -34,16 +34,13 @@ function onInput(e) {
       else if (countries.length > 1 && countries.length <= 10) {
         clearRender();
         renderCountryTitle(countries);
-      } else {
+      } else if (countries.length>10) {
         clearRender();
         Notify.info(
           'Too many mathces found. Please enter a more spesific name'
         );
       }
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    }).catch(catchError)
 }
 
 function renderCountryTitle(countries) {
@@ -76,4 +73,7 @@ function clearRender () {
   refs.countryList.innerHTML='';
 }
 
+function catchError() {
+  Notify.failure('Oops, there is no country with that name');
+}
 
