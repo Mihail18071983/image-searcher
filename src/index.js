@@ -57,7 +57,7 @@ function renderCountryTitle(countries) {
 }
 
 function renderCountryInfo(countries) {
-  const langs = countries.map(({ languages }) => Object.values(languages));
+  const langs = countries.map(({ languages }) => Object.values(languages).join(', '));
   const markup = countries
     .map(country => {
       return `<p class="info-text">Capital: <span class="value">${country.capital}</span></p>
