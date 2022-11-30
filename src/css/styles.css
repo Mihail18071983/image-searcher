@@ -19,7 +19,15 @@ body {
   margin-bottom: 16px;
 }
 
-ul, li {
+#search-box:focus {
+  outline: none;
+  border-color: #2196f3;
+  border-radius: 5px;
+}
+
+
+ul,
+li {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -28,7 +36,7 @@ ul, li {
 .country-item {
   display: flex;
   align-items: center;
-  gap:20px;
+  gap: 20px;
 }
 
 .country-img {
@@ -38,7 +46,7 @@ ul, li {
 .country-info {
   display: flex;
   flex-direction: column;
-  gap:10px;
+  gap: 10px;
 }
 .info-text {
   margin: 0;

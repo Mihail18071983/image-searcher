@@ -15,6 +15,7 @@ let formValue = '';
 
 refs.searchQueary.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
+
 function onInput(e) {
   e.preventDefault();
   formValue = refs.searchQueary.value.trim();
@@ -22,24 +23,25 @@ function onInput(e) {
     clearRender();
     return;
   }
- 
+
   fetchCountries(formValue)
     .then(countries => {
-      if (countries.length===1) {
+      if (countries.length === 1) {
         clearRender();
         renderCountryTitle(countries);
         renderCountryInfo(countries);
-      }
-      else if (countries.length > 1 && countries.length <= 10) {
+      } else if (countries.length > 1 && countries.length <= 10) {
         clearRender();
         renderCountryTitle(countries);
-      } else if (countries.length>10) {
+      } else if (countries.length > 10) {
         clearRender();
         Notify.info(
-          'Too many mathces found. Please enter a more spesific name'
+          'Too many mathces found. Please enter a more spesific name',
+          { timeout: 100, cssAnimationDuration: 1000 }
         );
       }
-    }).catch(catchError)
+    })
+    .catch(catchError);
 }
 
 function renderCountryTitle(countries) {
@@ -50,30 +52,31 @@ function renderCountryTitle(countries) {
       <p class="country-name">${country.name.official}</p>
     </li>`;
     })
-    .join('');  
+    .join('');
   refs.countryList.insertAdjacentHTML('beforeend', markup);
 }
 
 function renderCountryInfo(countries) {
-  const langs=countries.map(({languages})=>Object.values(languages))
+  const langs = countries.map(({ languages }) => Object.values(languages));
   const markup = countries
     .map(country => {
       return `<p class="info-text">Capital: <span class="value">${country.capital}</span></p>
-      <p class="info-text">Population: <span class="value">${country.population
-      }</span></p>
+      <p class="info-text">Population: <span class="value">${country.population}</span></p>
       <p class="info-text">languages: <span class="value">${langs}</span></p>`;
     })
     .join('');
   refs.countryInfo.insertAdjacentHTML('beforeend', markup);
 }
 
-function clearRender () {
-  refs.countryInfo.innerHTML=''; 
-  refs.countryList.innerHTML='';
+function clearRender() {
+  refs.countryInfo.innerHTML = '';
+  refs.countryList.innerHTML = '';
 }
 
 function catchError() {
   clearRender();
-  Notify.failure('Oops, there is no country with that name');
+  Notify.failure('Oops, there is no country with that name', {
+    timeout: 100,
+    cssAnimationDuration: 1000,
+  });
 }
-
