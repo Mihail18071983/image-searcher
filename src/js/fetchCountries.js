@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Notify } from 'notiflix';
 
 export function fetchCountries(name) {
   return axios

@@ -25,7 +25,6 @@ function onInput(e) {
  
   fetchCountries(formValue)
     .then(countries => {
-      console.dir(countries);
       if (countries.length===1) {
         clearRender();
         renderCountryTitle(countries);
@@ -74,6 +73,7 @@ function clearRender () {
 }
 
 function catchError() {
+  clearRender();
   Notify.failure('Oops, there is no country with that name');
 }
 
