@@ -1,12 +1,16 @@
 import { Notify } from 'notiflix';
 import '../node_modules/modern-normalize/modern-normalize.css';
+import "simplelightbox/dist/simple-lightbox.min.css";
 import './css/styles.css';
+import './css/lightbox.css';
+import SimpleLightbox from "simplelightbox";
 import { fetchImage } from './js/fetchImage';
 import { refs } from './js/refferense';
 import { render } from './js/render';
 let _page = 1;
 let _per_page = 40;
 let query = '';
+let items=[];
 refs.form.addEventListener('submit', handleSubmit);
 refs.loadMoreBtn.addEventListener('click', onLoadMore);
 
@@ -22,7 +26,8 @@ function handleSubmit(e) {
   }
   fetchImage(query, _page, _per_page)
     .then(data => {
-      render(data.hits);
+      items=[...data.hits]
+      render(items);
       return data;
     })
     .then(data =>
@@ -35,3 +40,17 @@ function onLoadMore(e) {
   _page += 1;
   fetchImage(query, _page, _per_page).then(data => render(data.hits));
 }
+
+const lightbox = new SimpleLightbox(".gallery a", {
+  captionsData: "alt",
+  captionDelay: 250,
+  scrollZoom: false,
+});
+
+lightbox.on("shown.simplelightbox", function () {
+  refs.body.classList.add("disable-scroll");
+});
+
+lightbox.on("closed.simplelightbox", function () {
+  refs.body.classList.remove("disable-scroll");
+});

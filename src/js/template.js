@@ -7,8 +7,9 @@ export const getItemsTemplate = ({
   comments,
   downloads,
 }) => {
-  return `<div class="photo-card">
-<img src="${webformatURL}" alt="${tags}" loading="lazy" />
+  return `<li class="photo-card">
+  <a class="gallery-link" href="${largeImageURL}">
+<img class ="gallery-image" src="${webformatURL}" alt="${tags}" loading="lazy" />
 <div class="info">
   <p class="info-item">
     <b>Likes: ${likes}</b>
@@ -23,5 +24,6 @@ export const getItemsTemplate = ({
     <b>Downloads: ${downloads}</b>
   </p>
 </div>
-</div>`;
+</a>
+</li>`;
 };
