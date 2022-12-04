@@ -1,16 +1,16 @@
 import { Notify } from 'notiflix';
 import '../node_modules/modern-normalize/modern-normalize.css';
-import "simplelightbox/dist/simple-lightbox.min.css";
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import './css/styles.css';
 import './css/lightbox.css';
-import SimpleLightbox from "simplelightbox";
+import SimpleLightbox from 'simplelightbox';
 import { fetchImage } from './js/fetchImage';
 import { refs } from './js/refferense';
 import { render } from './js/render';
 let _page = 1;
 let _per_page = 40;
 let query = '';
-let items=[];
+let items = [];
 refs.form.addEventListener('submit', handleSubmit);
 refs.loadMoreBtn.addEventListener('click', onLoadMore);
 
@@ -26,13 +26,11 @@ function handleSubmit(e) {
   }
   fetchImage(query, _page, _per_page)
     .then(data => {
-      items=[...data.hits]
+      items = [...data.hits];
       render(items);
       return data;
     })
-    .then(data =>
-      Notify.success(`Hooray! We found ${data.totalHits} images.`)
-    );
+    .then(data => Notify.success(`Hooray! We found ${data.totalHits} images.`));
 }
 
 function onLoadMore(e) {
@@ -41,16 +39,19 @@ function onLoadMore(e) {
   fetchImage(query, _page, _per_page).then(data => render(data.hits));
 }
 
-const lightbox = new SimpleLightbox(".gallery a", {
-  captionsData: "alt",
-  captionDelay: 250,
-  scrollZoom: false,
+const lightbox = new SimpleLightbox('.gallery a');
+
+refs.gallery.addEventListener('click', e => {
+  e.preventDefault();
+  // console.log("target",e.target);
+  // console.log('currentTarget', e.currentTarget);
+  // console.log(e.target.nodeName)
+//  if (e.target.nodeName==='IMG') {
+//   lightbox.open();
+//  }
+lightbox.open();
 });
 
-lightbox.on("shown.simplelightbox", function () {
-  refs.body.classList.add("disable-scroll");
-});
-
-lightbox.on("closed.simplelightbox", function () {
-  refs.body.classList.remove("disable-scroll");
-});
+// lightbox.on("shown.SimpleLightbox", function () {
+//   refs.body.classList.add("disable-scroll");
+// });

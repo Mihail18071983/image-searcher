@@ -7,7 +7,7 @@ export const getItemsTemplate = ({
   comments,
   downloads,
 }) => {
-  return `<li class="photo-card">
+  return `<li class="gallery-item">
   <a class="gallery-link" href="${largeImageURL}">
 <img class ="gallery-image" src="${webformatURL}" alt="${tags}" loading="lazy" />
 <div class="info">

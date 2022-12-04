@@ -23,6 +23,5 @@ export  async function fetchImage(query, page, per_page) {
     refs.loadMoreBtn.disabled = true;
     return;
   }
-  console.log(data)
   return data;
 }
