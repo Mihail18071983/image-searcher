@@ -39,19 +39,17 @@ function onLoadMore(e) {
   fetchImage(query, _page, _per_page).then(data => render(data.hits));
 }
 
-const lightbox = new SimpleLightbox('.gallery a');
+
 
 refs.gallery.addEventListener('click', e => {
   e.preventDefault();
-  // console.log("target",e.target);
-  // console.log('currentTarget', e.currentTarget);
-  // console.log(e.target.nodeName)
-//  if (e.target.nodeName==='IMG') {
-//   lightbox.open();
-//  }
-lightbox.open();
+  const lightbox = new SimpleLightbox('.gallery a');
+  if (e.target.nodeName!=='IMG') return;
+lightbox.on("shown.simplelightbox", function () {
+  refs.body.classList.add("disable-scroll");
+});
+lightbox.on("closed.simplelightbox", function () {
+  refs.body.classList.remove("disable-scroll");
+});
 });
 
-// lightbox.on("shown.SimpleLightbox", function () {
-//   refs.body.classList.add("disable-scroll");
-// });
