@@ -17,10 +17,11 @@ refs.loadMoreBtn.addEventListener('click', onLoadMore);
 function handleSubmit(e) {
   e.preventDefault();
   const form = e.currentTarget;
-  const { value } = form.elements.searchQuery;
-  if (value !== query) {
+  const  searchQuery  = form.elements.searchQuery.value.trim();
+  if (searchQuery==="") return
+  if (searchQuery !== query) {
     refs.gallery.innerHTML = '';
-    query = value;
+    query = searchQuery;
     _page = 1;
     form.reset();
   }
