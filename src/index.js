@@ -3,7 +3,7 @@ import '../node_modules/modern-normalize/modern-normalize.css';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './css/styles.css';
 import './css/lightbox.css';
-import SimpleLightbox from 'simplelightbox';
+import {createLightBox} from './js/createLightBox'
 import { fetchImage } from './js/fetchImage';
 import { refs } from './js/refferense';
 import { render } from './js/render';
@@ -30,26 +30,19 @@ function handleSubmit(e) {
       render(items);
       return data;
     })
-    .then(data => Notify.success(`Hooray! We found ${data.totalHits} images.`));
+    .then(data => Notify.success(`Hooray! We found ${data.totalHits} images.`))
+    .then(createLightBox);
 }
 
 function onLoadMore(e) {
-  console.log(e.target);
   _page += 1;
-  fetchImage(query, _page, _per_page).then(data => render(data.hits));
+  fetchImage(query, _page, _per_page)
+    .then(data => render(data.hits))
+    .then(() => {
+      createLightBox;
+      createLightBox().refresh();
+    });
 }
 
 
-
-refs.gallery.addEventListener('click', e => {
-  e.preventDefault();
-  const lightbox = new SimpleLightbox('.gallery a');
-  if (e.target.nodeName!=='IMG') return;
-lightbox.on("shown.simplelightbox", function () {
-  refs.body.classList.add("disable-scroll");
-});
-lightbox.on("closed.simplelightbox", function () {
-  refs.body.classList.remove("disable-scroll");
-});
-});
 
