@@ -7,6 +7,7 @@ import {createLightBox} from './js/createLightBox'
 import { fetchImage } from './js/fetchImage';
 import { refs } from './js/refferense';
 import { render } from './js/render';
+import {smoothScroll} from './js/smoothScroll'
 let _page = 1;
 let _per_page = 40;
 let query = '';
@@ -25,6 +26,7 @@ function handleSubmit(e) {
     _page = 1;
     form.reset();
   }
+
   fetchImage(query, _page, _per_page)
     .then(data => {
       items = [...data.hits];
@@ -32,17 +34,18 @@ function handleSubmit(e) {
       return data;
     })
     .then(data => Notify.success(`Hooray! We found ${data.totalHits} images.`))
-    .then(createLightBox);
+    .then(createLightBox).then(smoothScroll);
+
 }
 
-function onLoadMore(e) {
+function onLoadMore() {
   _page += 1;
   fetchImage(query, _page, _per_page)
     .then(data => render(data.hits))
     .then(() => {
       createLightBox;
       createLightBox().refresh();
-    });
+    }).then(smoothScroll);
 }
 
 
