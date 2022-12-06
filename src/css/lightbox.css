@@ -28,7 +28,7 @@
     width: 100%;
     display: block;
     height: 240px;
-    /* object-fit: cover; */
+    object-fit: cover;
     /* opacity: 0;
     visibility: hidden;
     transition: all var(--animation-duration) var(--timing-function) 500ms; */
