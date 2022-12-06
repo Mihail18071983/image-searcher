@@ -1,6 +1,6 @@
+import {refs} from "./refferense"
 export async function smoothScroll() {
-  const { height: cardHeight } = document
-    .querySelector('.gallery')
+  const { height: cardHeight } = refs.gallery
     .firstElementChild.getBoundingClientRect();
 
   window.scrollBy({
