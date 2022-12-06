@@ -12,16 +12,17 @@ export  async function fetchImage(query, page, per_page) {
     searchParams
   );
 
-  const totalPage = data.totalHits / per_page;
+  const totalPage = await data.totalHits / per_page;
   if (data.hits.length === 0) {
-    Notify.info(
+    Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
-  }
-  if (page > totalPage && totalPage!==0) {
-    Notify.info("We're sorry, but you've reached the end of search results.");
-    refs.loadMoreBtn.disabled = true;
     return;
   }
+
+  if (page > totalPage) {
+    Notify.info("We're sorry, but you've reached the end of search results.");
+  }
+  refs.loadMoreBtn.disabled = false;
   return data;
 }
