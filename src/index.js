@@ -3,7 +3,8 @@ import '../node_modules/modern-normalize/modern-normalize.css';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './css/styles.css';
 import './css/lightbox.css';
-import { createLightBox } from './js/createLightBox';
+import SimpleLightbox from 'simplelightbox';
+// import { createLightBox } from './js/createLightBox';
 import { fetchImage } from './js/fetchImage';
 import { refs } from './js/refferense';
 import { render } from './js/render';
@@ -15,6 +16,12 @@ let query = '';
 refs.form.addEventListener('submit', handleSubmit);
 refs.loadMoreBtn.addEventListener('click', onLoadMore);
 refs.loadMoreBtn.disabled = true;
+
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+  scrollZoom: false,
+});
 
 async function handleSubmit(e) {
   e.preventDefault();
@@ -42,34 +49,25 @@ async function handleSubmit(e) {
     })
     .catch(err => err.message);
 
-  await createLightBox().then(lightbox => {
-    lightbox.on('shown.simplelightbox', function () {
-      refs.body.classList.add('disable-scroll');
-    });
-    lightbox.on('closed.simplelightbox', function () {
-      refs.body.classList.remove('disable-scroll');
-    });
-    return lightbox;
-  })
+  await lightbox.refresh();
+  await lightbox.on('shown.simplelightbox', function () {
+    refs.body.classList.add('disable-scroll');
+  });
+  await lightbox.on('closed.simplelightbox', function () {
+    refs.body.classList.remove('disable-scroll');
+  });
 }
-
 
 async function onLoadMore() {
   _page += 1;
   await fetchImage(query, _page, _per_page).then(data => render(data.hits));
-  await createLightBox()
-    .then(lightbox => {
-      lightbox.refresh();
-      return lightbox;
-    })
-    .then(lightbox => {
-      lightbox.on('shown.simplelightbox', function () {
-        refs.body.classList.add('disable-scroll');
-      });
-      lightbox.on('closed.simplelightbox', function () {
-        refs.body.classList.remove('disable-scroll');
-      });
-      return lightbox;
-    });
+  await lightbox.refresh();
+  await lightbox.on('shown.simplelightbox', function () {
+    refs.body.classList.add('disable-scroll');
+  });
+  await lightbox.on('closed.simplelightbox', function () {
+    refs.body.classList.remove('disable-scroll');
+  });
+
   await smoothScroll();
 }
