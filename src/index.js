@@ -8,7 +8,8 @@ import { fetchImage } from './js/fetchImage';
 import { refs } from './js/refferense';
 import { render } from './js/render';
 import { smoothScroll } from './js/smoothScroll';
-import OnlyScroll from 'only-scrollbar';
+import '../node_modules/infinite-scroll/dist/infinite-scroll.pkgd.js';
+
 let _page = 1;
 let _per_page = 40;
 let query = '';
@@ -71,4 +72,10 @@ async function onLoadMore() {
   await smoothScroll();
 }
 
-// const scroll = new OnlyScroll(refs.gallery);
+
+let infScroll = new InfiniteScroll( refs.gallery, {
+  // options
+  path: '.pagination__next',
+  append: '.gallery-link',
+  history: false,
+});
