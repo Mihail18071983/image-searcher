@@ -8,3 +8,4 @@ export async function smoothScroll() {
     behavior: 'smooth',
   });
 }
+

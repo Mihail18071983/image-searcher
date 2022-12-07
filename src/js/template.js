@@ -7,7 +7,7 @@ export const getItemsTemplate = ({
   comments,
   downloads,
 }) => {
-  return `<li class="gallery-item">
+  return `
   <a class="gallery-link" href="${largeImageURL}">
 <img class ="gallery-image" src="${webformatURL}" alt="${tags}" loading="lazy" />
 <div class="info">
@@ -24,6 +24,5 @@ export const getItemsTemplate = ({
     <b>Downloads: ${downloads}</b>
   </p>
 </div>
-</a>
-</li>`;
+</a>`;
 };

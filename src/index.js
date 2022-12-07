@@ -4,7 +4,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import './css/styles.css';
 import './css/lightbox.css';
 import SimpleLightbox from 'simplelightbox';
-// import { createLightBox } from './js/createLightBox';
 import { fetchImage } from './js/fetchImage';
 import { refs } from './js/refferense';
 import { render } from './js/render';
@@ -71,3 +70,5 @@ async function onLoadMore() {
 
   await smoothScroll();
 }
+
+// const scroll = new OnlyScroll(refs.gallery);
