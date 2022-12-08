@@ -3,19 +3,19 @@ import '../node_modules/modern-normalize/modern-normalize.css';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './css/styles.css';
 import './css/lightbox.css';
+// import './scss/custom.css'
 import SimpleLightbox from 'simplelightbox';
 import { fetchImage } from './js/fetchImage';
 import { refs } from './js/refferense';
 import { render } from './js/render';
 import { smoothScroll } from './js/smoothScroll';
-import '../node_modules/infinite-scroll/dist/infinite-scroll.pkgd.js';
-
+import throttle from 'lodash.throttle';
 let _page = 1;
 let _per_page = 40;
 let query = '';
 refs.form.addEventListener('submit', handleSubmit);
-refs.loadMoreBtn.addEventListener('click', onLoadMore);
-refs.loadMoreBtn.disabled = true;
+// refs.loadMoreBtn.addEventListener('click', onLoadMore);
+// refs.loadMoreBtn.disabled = true;
 
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
@@ -38,7 +38,6 @@ async function handleSubmit(e) {
   await fetchImage(query, _page, _per_page)
     .then(data => {
       render(data.hits);
-      console.log(data);
       return data;
     })
     .then(data => {
@@ -58,24 +57,61 @@ async function handleSubmit(e) {
   });
 }
 
-async function onLoadMore() {
-  _page += 1;
-  await fetchImage(query, _page, _per_page).then(data => render(data.hits));
-  await lightbox.refresh();
-  await lightbox.on('shown.simplelightbox', function () {
-    refs.body.classList.add('disable-scroll');
-  });
-  await lightbox.on('closed.simplelightbox', function () {
-    refs.body.classList.remove('disable-scroll');
-  });
+// async function onLoadMore() {
+//   _page += 1;
+//   await fetchImage(query, _page, _per_page).then(data => render(data.hits));
+//   await lightbox.refresh();
+//   await lightbox.on('shown.simplelightbox', function () {
+//     refs.body.classList.add('disable-scroll');
+//   });
+//   await lightbox.on('closed.simplelightbox', function () {
+//     refs.body.classList.remove('disable-scroll');
+//   });
 
-  await smoothScroll();
+//   await smoothScroll();
+// }
+
+// window.addEventListener('scroll', throttle(onScroll, 500));
+
+// async function onScroll(e) {
+//   e.preventDefault();
+//   const documentRect = document.documentElement.getBoundingClientRect();
+//   console.log(documentRect)
+//   if (documentRect.bottom <= document.documentElement.clientHeight + 150) {
+//     _page += 1;
+//     await fetchImage(query, _page, _per_page).then(data => render(data.hits));
+//     await lightbox.refresh();
+//     await lightbox.on('shown.simplelightbox', function () {
+//       refs.body.classList.add('disable-scroll');
+//     });
+//     await lightbox.on('closed.simplelightbox', function () {
+//       refs.body.classList.remove('disable-scroll');
+//     });
+//   }
+// }
+
+const onEntry = entries => {
+  entries.forEach(async entry => {
+    if (entry.isIntersecting && query!=='') {
+      _page += 1;
+      await fetchImage(query, _page, _per_page).then(data => render(data.hits));
+      await lightbox.refresh();
+      await lightbox.on('shown.simplelightbox', () => {
+        refs.body.classList.add('disable-scroll');
+      });
+      await lightbox.on('closed.simplelightbox',  () => {
+        refs.body.classList.remove('disable-scroll');
+      });
+    }
+  });
+};
+
+const options ={
+  rootMargin:"150px",
+  root: refs.gallery,
+  threshold: 0.5,
 }
 
-
-let infScroll = new InfiniteScroll( refs.gallery, {
-  // options
-  path: '.pagination__next',
-  append: '.gallery-link',
-  history: false,
-});
+const observer = new IntersectionObserver(onEntry, options);
+console.log(refs.sentinel)
+observer.observe(refs.sentinel)

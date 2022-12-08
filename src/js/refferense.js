@@ -4,4 +4,5 @@ export const refs = {
     loadMoreBtn: document.querySelector('.load-more'),
     searchBtn:document.querySelector('.search-btn'),
     body:document.body,
+    sentinel:document.querySelector('.sentinel'),
   };
