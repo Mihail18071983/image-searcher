@@ -25,7 +25,6 @@ const observer = new IntersectionObserver(onEntry, options);
 
 observer.observe(refs.sentinel);
 
-
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
@@ -41,17 +40,16 @@ async function handleSubmit(e) {
     refs.gallery.innerHTML = '';
     query = searchQuery;
     _page = 1;
-    // form.reset();
+    form.reset();
   }
 
   await fetchImage(query, _page, _per_page)
     .then(data => {
       if (data.hits.length === 0) {
-        refs.spinner.classList.toggle('js-hidden');
         Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
         );
-        return;
+        
       } else {
         Notify.success(`Hooray! We found ${data.totalHits} images.`);
         render(data.hits);
@@ -59,18 +57,8 @@ async function handleSubmit(e) {
       }
       return data;
     })
-    // .then(data => {
-    //   const totalPage = data.totalHits / _per_page;
-    //   if (_page >= totalPage) {
-    //     Notify.info(
-    //       "We're sorry, but you've reached the end of search results."
-    //     );
-    //     refs.spinner.classList.add('js-hidden');
-    //     return;
-    //   }
-    // })
-    .catch(err => err.message);
-   
+    .catch(err => err.message)
+    .finally(refs.spinner.classList.add('js-hidden'));
 
   await lightbox.refresh();
   await lightbox.on('shown.simplelightbox', function () {
@@ -115,7 +103,7 @@ async function handleSubmit(e) {
 //   }
 // }
 
-function onEntry  (entries) {
+function onEntry(entries) {
   entries.forEach(async entry => {
     if (entry.isIntersecting && query !== '') {
       _page += 1;
@@ -127,12 +115,12 @@ function onEntry  (entries) {
         })
         .then(data => {
           const totalPage = data.totalHits / _per_page;
-          if (_page >= totalPage) {
+          if (_page > totalPage) {
             Notify.info(
               "We're sorry, but you've reached the end of search results."
             );
-            refs.spinner.classList.toggle('js-hidden');
-            observer.unobserve(refs.sentinel)
+            refs.spinner.classList.add('js-hidden');
+            observer.unobserve(refs.sentinel);
             return;
           }
         })
@@ -147,6 +135,4 @@ function onEntry  (entries) {
       });
     }
   });
-};
-
-
+}
