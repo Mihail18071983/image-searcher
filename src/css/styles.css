@@ -60,5 +60,9 @@ body {
   align-items: center;
 }
 
-
+.js-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
 

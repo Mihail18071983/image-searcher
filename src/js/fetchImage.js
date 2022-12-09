@@ -1,6 +1,6 @@
 const { default: axios } = require('axios');
 import { Notify } from 'notiflix';
-import { searchParams } from './searchParans';
+import { searchParams } from './searchParams';
 import { refs } from './refferense';
 
 const BASE_URL = 'https://pixabay.com/api/';
@@ -12,17 +12,19 @@ export  async function fetchImage(query, page, per_page) {
     searchParams
   );
 
-  const totalPage = await data.totalHits / per_page;
-  if (data.hits.length === 0) {
-    Notify.failure(
-      'Sorry, there are no images matching your search query. Please try again.'
-    );
-    return;
-  }
+  // const totalPage = await data.totalHits / per_page;
+  // if (data.hits.length === 0) {
+  //   Notify.failure(
+  //     'Sorry, there are no images matching your search query. Please try again.'
+  //   );
+  //   return;
+  // }
 
-  if (page > totalPage) {
-    Notify.info("We're sorry, but you've reached the end of search results.");
-  }
-  // refs.loadMoreBtn.disabled = false;
+  // if (page >= totalPage) {
+  //   Notify.info("We're sorry, but you've reached the end of search results.");
+  //   refs.spinner.classList.add('js-hidden');
+  //   return;
+  // }
+
   return data;
 }

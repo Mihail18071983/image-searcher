@@ -3,19 +3,28 @@ import '../node_modules/modern-normalize/modern-normalize.css';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './css/styles.css';
 import './css/lightbox.css';
-// import './scss/custom.css'
 import SimpleLightbox from 'simplelightbox';
 import { fetchImage } from './js/fetchImage';
 import { refs } from './js/refferense';
 import { render } from './js/render';
 import { smoothScroll } from './js/smoothScroll';
-import throttle from 'lodash.throttle';
 let _page = 1;
 let _per_page = 40;
 let query = '';
+
 refs.form.addEventListener('submit', handleSubmit);
-// refs.loadMoreBtn.addEventListener('click', onLoadMore);
-// refs.loadMoreBtn.disabled = true;
+
+refs.spinner.classList.add('js-hidden');
+
+const options = {
+  rootMargin: '150px',
+  threshold: 0.5,
+};
+
+const observer = new IntersectionObserver(onEntry, options);
+
+observer.observe(refs.sentinel);
+
 
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
@@ -32,21 +41,36 @@ async function handleSubmit(e) {
     refs.gallery.innerHTML = '';
     query = searchQuery;
     _page = 1;
-    form.reset();
+    // form.reset();
   }
 
   await fetchImage(query, _page, _per_page)
     .then(data => {
-      render(data.hits);
+      if (data.hits.length === 0) {
+        refs.spinner.classList.add('js-hidden');
+        Notify.failure(
+          'Sorry, there are no images matching your search query. Please try again.'
+        );
+        return;
+      } else {
+        Notify.success(`Hooray! We found ${data.totalHits} images.`);
+        render(data.hits);
+        smoothScroll();
+      }
       return data;
     })
-    .then(data => {
-      if (data.hits.lenght !== 0) {
-        smoothScroll();
-        Notify.success(`Hooray! We found ${data.totalHits} images.`);
-      }
-    })
+    // .then(data => {
+    //   const totalPage = data.totalHits / _per_page;
+    //   if (_page >= totalPage) {
+    //     Notify.info(
+    //       "We're sorry, but you've reached the end of search results."
+    //     );
+    //     refs.spinner.classList.add('js-hidden');
+    //     return;
+    //   }
+    // })
     .catch(err => err.message);
+   
 
   await lightbox.refresh();
   await lightbox.on('shown.simplelightbox', function () {
@@ -55,6 +79,7 @@ async function handleSubmit(e) {
   await lightbox.on('closed.simplelightbox', function () {
     refs.body.classList.remove('disable-scroll');
   });
+  refs.spinner.classList.remove('js-hidden');
 }
 
 // async function onLoadMore() {
@@ -90,28 +115,39 @@ async function handleSubmit(e) {
 //   }
 // }
 
-const onEntry = entries => {
+function onEntry  (entries) {
   entries.forEach(async entry => {
-    if (entry.isIntersecting && query!=='') {
+    entry.intersectionRatio=1;
+    if (entry.isIntersecting && query !== '') {
       _page += 1;
-      await fetchImage(query, _page, _per_page).then(data => render(data.hits));
+      refs.spinner.classList.remove('js-hidden');
+      await fetchImage(query, _page, _per_page)
+        .then(data => {
+          render(data.hits);
+          return data;
+        })
+        .then(data => {
+          const totalPage = data.totalHits / _per_page;
+          if (_page >= totalPage) {
+            Notify.info(
+              "We're sorry, but you've reached the end of search results."
+            );
+            refs.spinner.classList.add('js-hidden');
+            observer.unobserve(refs.sentinel)
+            return;
+          }
+        })
+        .catch(err => err.message);
+      await smoothScroll();
       await lightbox.refresh();
       await lightbox.on('shown.simplelightbox', () => {
         refs.body.classList.add('disable-scroll');
       });
-      await lightbox.on('closed.simplelightbox',  () => {
+      await lightbox.on('closed.simplelightbox', () => {
         refs.body.classList.remove('disable-scroll');
       });
     }
   });
 };
 
-const options ={
-  rootMargin:"150px",
-  root: refs.gallery,
-  threshold: 0.5,
-}
 
-const observer = new IntersectionObserver(onEntry, options);
-console.log(refs.sentinel)
-observer.observe(refs.sentinel)
