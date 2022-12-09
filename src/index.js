@@ -117,7 +117,6 @@ async function handleSubmit(e) {
 
 function onEntry  (entries) {
   entries.forEach(async entry => {
-    entry.intersectionRatio=1;
     if (entry.isIntersecting && query !== '') {
       _page += 1;
       refs.spinner.classList.remove('js-hidden');
