@@ -78,11 +78,12 @@ function onEntry(entries) {
       await fetchImage(query, _page, _per_page)
         .then(data => {
           render(data.hits);
+          smoothScroll();
           return data;
         })
         .then(data => {
           const totalPage = data.totalHits / _per_page;
-          if (_page > totalPage) {
+          if (_page >= totalPage) {
             Notify.info(
               "We're sorry, but you've reached the end of search results."
             );
@@ -92,7 +93,6 @@ function onEntry(entries) {
         })
         .catch(err => err.message)
         .finally(() => refs.spinner.classList.add('js-hidden'));
-      await smoothScroll();
       await lightbox.refresh();
       await lightbox.on('shown.simplelightbox', () => {
         refs.body.classList.add('disable-scroll');
