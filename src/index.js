@@ -47,7 +47,7 @@ async function handleSubmit(e) {
   await fetchImage(query, _page, _per_page)
     .then(data => {
       if (data.hits.length === 0) {
-        refs.spinner.classList.add('js-hidden');
+        refs.spinner.classList.toggle('js-hidden');
         Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
         );
