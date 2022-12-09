@@ -131,7 +131,7 @@ function onEntry  (entries) {
             Notify.info(
               "We're sorry, but you've reached the end of search results."
             );
-            refs.spinner.classList.add('js-hidden');
+            refs.spinner.classList.toggle('js-hidden');
             observer.unobserve(refs.sentinel)
             return;
           }
