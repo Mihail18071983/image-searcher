@@ -49,7 +49,6 @@ async function handleSubmit(e) {
         Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
         );
-        
       } else {
         Notify.success(`Hooray! We found ${data.totalHits} images.`);
         render(data.hits);
@@ -58,7 +57,7 @@ async function handleSubmit(e) {
       return data;
     })
     .catch(err => err.message)
-    .finally(refs.spinner.classList.add('js-hidden'));
+    .finally(() => refs.spinner.classList.add('js-hidden'));
 
   await lightbox.refresh();
   await lightbox.on('shown.simplelightbox', function () {
@@ -67,41 +66,9 @@ async function handleSubmit(e) {
   await lightbox.on('closed.simplelightbox', function () {
     refs.body.classList.remove('disable-scroll');
   });
-  refs.spinner.classList.remove('js-hidden');
 }
 
-// async function onLoadMore() {
-//   _page += 1;
-//   await fetchImage(query, _page, _per_page).then(data => render(data.hits));
-//   await lightbox.refresh();
-//   await lightbox.on('shown.simplelightbox', function () {
-//     refs.body.classList.add('disable-scroll');
-//   });
-//   await lightbox.on('closed.simplelightbox', function () {
-//     refs.body.classList.remove('disable-scroll');
-//   });
 
-//   await smoothScroll();
-// }
-
-// window.addEventListener('scroll', throttle(onScroll, 500));
-
-// async function onScroll(e) {
-//   e.preventDefault();
-//   const documentRect = document.documentElement.getBoundingClientRect();
-//   console.log(documentRect)
-//   if (documentRect.bottom <= document.documentElement.clientHeight + 150) {
-//     _page += 1;
-//     await fetchImage(query, _page, _per_page).then(data => render(data.hits));
-//     await lightbox.refresh();
-//     await lightbox.on('shown.simplelightbox', function () {
-//       refs.body.classList.add('disable-scroll');
-//     });
-//     await lightbox.on('closed.simplelightbox', function () {
-//       refs.body.classList.remove('disable-scroll');
-//     });
-//   }
-// }
 
 function onEntry(entries) {
   entries.forEach(async entry => {
@@ -119,12 +86,12 @@ function onEntry(entries) {
             Notify.info(
               "We're sorry, but you've reached the end of search results."
             );
-            refs.spinner.classList.add('js-hidden');
             observer.unobserve(refs.sentinel);
             return;
           }
         })
-        .catch(err => err.message);
+        .catch(err => err.message)
+        .finally(() => refs.spinner.classList.add('js-hidden'));
       await smoothScroll();
       await lightbox.refresh();
       await lightbox.on('shown.simplelightbox', () => {
