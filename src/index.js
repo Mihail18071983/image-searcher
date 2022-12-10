@@ -18,12 +18,12 @@ refs.spinner.classList.add('js-hidden');
 
 const options = {
   rootMargin: '150px',
-  threshold: 0.5,
+  threshold: 1.0,
+  
 };
 
 const observer = new IntersectionObserver(onEntry, options);
 
-observer.observe(refs.sentinel);
 
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
@@ -33,6 +33,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
 
 async function handleSubmit(e) {
   e.preventDefault();
+  observer.unobserve(refs.sentinel);
   const form = e.currentTarget;
   const searchQuery = form.elements.searchQuery.value.trim();
   if (searchQuery === '') return;
@@ -40,7 +41,6 @@ async function handleSubmit(e) {
     refs.gallery.innerHTML = '';
     query = searchQuery;
     _page = 1;
-    form.reset();
   }
 
   await fetchImage(query, _page, _per_page)
@@ -53,6 +53,7 @@ async function handleSubmit(e) {
         Notify.success(`Hooray! We found ${data.totalHits} images.`);
         render(data.hits);
         smoothScroll();
+        observer.observe(refs.sentinel);
       }
       return data;
     })
@@ -72,8 +73,8 @@ async function handleSubmit(e) {
 
 function onEntry(entries) {
   entries.forEach(async entry => {
-    if (entry.isIntersecting && query !== '') {
-      _page += 1;
+    if (entry.isIntersecting && query !== '')  {
+      _page += 1; 
       refs.spinner.classList.remove('js-hidden');
       await fetchImage(query, _page, _per_page)
         .then(data => {
