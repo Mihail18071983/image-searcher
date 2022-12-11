@@ -5,5 +5,4 @@ export const refs = {
     body:document.body,
     sentinel:document.querySelector('.sentinel'),
     spinner:document.querySelector('.spinner-border'),
-    searchQuery:document.querySelector('.search-query'),
   };

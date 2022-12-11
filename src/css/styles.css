@@ -1,6 +1,6 @@
-
 ul,
-li, a {
+li,
+a {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -47,9 +47,9 @@ body {
 }
 
 .wrapper {
-  position:fixed;
-  top:0;
-  left:50%;
+  position: fixed;
+  top: 0;
+  left: 50%;
   transform: translateX(-50%);
   z-index: 100;
   background-color: #2196f3;
@@ -66,8 +66,9 @@ body {
   pointer-events: none;
 }
 
-/* .spinner-border .centered {
-  display: block;
+.spinner-border.centered {
+  display: flex;
+  margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
-} */
+}
