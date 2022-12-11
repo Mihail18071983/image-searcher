@@ -75,6 +75,7 @@ function onEntry(entries) {
   entries.forEach(async entry => {
     if (entry.isIntersecting && query !== '')  {
       _page += 1; 
+      observer.observe(refs.sentinel)
       refs.spinner.classList.remove('js-hidden');
       await fetchImage(query, _page, _per_page)
         .then(data => {
