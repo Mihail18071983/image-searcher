@@ -3,11 +3,13 @@ import '../node_modules/modern-normalize/modern-normalize.css';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './css/styles.css';
 import './css/lightbox.css';
+import './css/scroll-btn.css'
 import SimpleLightbox from 'simplelightbox';
 import { fetchImage } from './js/fetchImage';
 import { refs } from './js/refferense';
 import { render } from './js/render';
 import { smoothScroll } from './js/smoothScroll';
+import * as Menuscroll from './js/menu-scroll'
 let _page = 1;
 let _per_page = 40;
 let query = '';
@@ -105,3 +107,5 @@ function onEntry(entries) {
     }
   });
 }
+
+console.dir(Menuscroll)

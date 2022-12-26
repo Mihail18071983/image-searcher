@@ -1,0 +1,28 @@
+.scroll-up-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 1000;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background-color: var(--accent-color);
+    border-radius: 10px;
+    opacity: .6;
+    color: black;
+    transition-duration: 250ms;
+    transition-timing-function: var(--timing-function);
+    box-shadow: 1px 49px 41px -25px rgba(0, 0, 0, 0.51);
+}
+    
+.scroll-up-btn:hover, .scroll-up-btn:focus {
+      opacity: 1;
+      scale: 1.25;
+      }
+    
+      .scroll-up-btn-icon {
+        fill: var(--button-hover-color);
+      }
+  
